@@ -1,7 +1,7 @@
 package services
 
 import (
-	"go-shop-microservice/good/models"
+	"go-shop-microservice/internal/app/goods/models"
 )
 
 type GoodService struct {

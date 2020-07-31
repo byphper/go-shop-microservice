@@ -194,7 +194,7 @@ func (gd *GoodDaoImpl) CreateSku(sku *GoodSku) (*GoodSku, error) {
 		for _, v := range attrValues {
 			attrIds = append(attrIds, v.GoodAttrId)
 		}
-		var attrs [] GoodAttr
+		var attrs []GoodAttr
 		if err := Db.Where("id IN (?)", attrIds).Find(&attrs).Error; err != nil {
 			tx.Rollback()
 			return nil, err

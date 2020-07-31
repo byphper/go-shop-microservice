@@ -1,10 +1,16 @@
-package config
+package models
 
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
 )
+
+var Db *gorm.DB
+
+func init() {
+	Db = GetDb()
+}
 
 func GetDb() *gorm.DB {
 	db, err := gorm.Open("mysql", "root:ayong@/xxswkl?charset=utf8&parseTime=True&loc=Local")
