@@ -13,7 +13,7 @@ func init() {
 }
 
 func GetDb() *gorm.DB {
-	db, err := gorm.Open("mysql", "root:ayong@/xxswkl?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "root:ayong@/goods_db?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		log.Fatal(err)
 	}

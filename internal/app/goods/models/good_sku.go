@@ -13,9 +13,8 @@ type GoodSku struct {
 	LogoUrl         string `gorm:"type:varchar(255)"`
 	MainUrl         string `gorm:"type:varchar(255)"`
 	BannerUrl       string `gorm:"type:varchar(255)"`
-	GoodsAttrValues string `gorm:"type:varchar(255)"`
 	SellPrice       uint
 	MarketPrice     uint
-	Quantity        uint
+	Stock        uint
 	Status          uint `gorm:"type:tinyint(1)"`
 }

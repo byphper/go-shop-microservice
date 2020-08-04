@@ -9,8 +9,8 @@ type GoodSpu struct {
 	Name           string `gorm:"type:varchar(50);"`
 	GoodBrandId    uint   `gorm:"index:good_brand_id"`
 	GoodCategoryId uint   `gorm:"index:good_category_id"`
-	GoodBrand      GoodBrand
-	GoodCategory   GoodCategory
+	GoodBrand      Brand
+	GoodCategory   Category
 	Desc           string `gorm:"type:varchar(255)"`
 	LogoUrl        string `gorm:"type:varchar(255)"`
 	MainUrl        string `gorm:"type:varchar(255)"`

@@ -5,8 +5,12 @@ import (
 )
 
 type Manager struct {
-	EventListenerMap map[string][]Listener
+	eventListenerMap map[string][]Listener
 	lock             sync.Mutex
+}
+
+func New() *Manager {
+	return &Manager{eventListenerMap: make(map[string][]Listener)}
 }
 
 func (manager *Manager) Add(eventName string, listener Listener) {
@@ -14,17 +18,17 @@ func (manager *Manager) Add(eventName string, listener Listener) {
 		manager.lock.Unlock()
 	}()
 	manager.lock.Lock()
-	if listeners, ok := manager.EventListenerMap[eventName]; ok {
+	if listeners, ok := manager.eventListenerMap[eventName]; ok {
 		listeners := append(listeners, listener)
-		manager.EventListenerMap[eventName] = listeners
+		manager.eventListenerMap[eventName] = listeners
 	} else {
 		listeners := make([]Listener, 100)
-		manager.EventListenerMap[eventName] = append(listeners, listener)
+		manager.eventListenerMap[eventName] = append(listeners, listener)
 	}
 }
 
 func (manager *Manager) Dispatch(event Event) {
-	if listeners, ok := manager.EventListenerMap[event.Name()]; ok {
+	if listeners, ok := manager.eventListenerMap[event.Name()]; ok {
 		for _, listener := range listeners {
 			if listener != nil {
 				if listener.IsAsync() {

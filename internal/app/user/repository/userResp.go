@@ -64,7 +64,11 @@ func (u *UserResp) Create(email string, name string, avatar string, pwd string) 
 }
 
 func (u *UserResp) Update(user entities.User) (err error) {
-	userModel := &models.User{}
-	err = models.Db.Where("id =?", user.Id).First(userModel).Error
+	userModel := &models.User{
+		Name:   user.Name,
+		Email:  user.Email,
+		Avatar: user.Avatar,
+	}
+	err = models.Db.Model(userModel).Where("id =?", user.Id).Updates(userModel).Error
 	return
 }
