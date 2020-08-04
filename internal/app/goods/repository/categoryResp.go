@@ -52,7 +52,10 @@ func (categoryResp *CategoryResp) deepUpdateCategoryPath(cateModel *models.Categ
 		if err := models.Db.Where("id =?", cateModel.PId).First(model).Error; err != nil {
 			return err
 		}
-		pathStr := model.Path + strconv.Itoa(int(id)) + "-"
+		pathStr := model.Path + strconv.Itoa(int(id))
+		if !strings.HasSuffix(pathStr, "-") {
+			pathStr = pathStr + "-"
+		}
 		if err := models.Db.Model(model).Update("path", pathStr).Error; err != nil {
 			return err
 		}
@@ -79,7 +82,7 @@ func (categoryResp *CategoryResp) deepDeleteCategoryPath(cateModel *models.Categ
 			}
 		}
 		newPathSlice := append(pathSlice[:index], pathSlice[index+1:]...)
-		newPathStr := strings.Join(newPathSlice, "-") + "-"
+		newPathStr := strings.Join(newPathSlice, "-")
 		if err := models.Db.Model(model).Update("path", newPathStr).Error; err != nil {
 			return err
 		}
@@ -112,8 +115,11 @@ func (categoryResp *CategoryResp) Update(cate entities.Category) (err error) {
 		tx.Rollback()
 		return errors.New("更新失败")
 	}
-	//如果修改了pid 则需要递归处理包含了该分类的path部分
+	//如果修改了pid 并且该分类是叶子分类 则需要递归处理包含了该分类的path部分
 	if oldCate.PId != cate.PId {
+		if oldCate.Path != "" {
+			return errors.New("只有叶子分类才能修改父分类")
+		}
 		categoryResp.pathModifylock.Lock()
 		model.PId = oldCate.PId
 		err = categoryResp.deepDeleteCategoryPath(model, cate.Id)
@@ -145,5 +151,58 @@ func (categoryResp *CategoryResp) Get(id uint) (cate entities.Category, err erro
 	cate.Desc = model.Desc
 	cate.LogoUrl = model.LogoUrl
 	cate.PId = model.PId
+	cate.Path = model.Path
+	return
+}
+
+func (categoryResp *CategoryResp) GetAllChilds(id uint) (categories []entities.Category, err error) {
+	model := &models.Category{}
+	if err = models.Db.Where("id =?", id).Select("path").First(model).Error; err != nil {
+		return
+	}
+	if model.Path == "" {
+		return
+	}
+	var categoryModels []models.Category
+	pathIds := strings.Split(model.Path, "-")
+	if err = models.Db.Where(pathIds).Find(&categoryModels).Error; err != nil {
+		return
+	}
+	for _, v := range categoryModels {
+		cate := entities.Category{
+			Id:      v.ID,
+			Name:    v.Name,
+			Desc:    v.Desc,
+			PId:     v.PId,
+			LogoUrl: v.LogoUrl,
+		}
+		categories = append(categories, cate)
+	}
+	return
+}
+
+func (categoryResp *CategoryResp) GetDirectChilds(id uint) (categories []entities.Category, err error) {
+	var categoryModels []models.Category
+	if err = models.Db.Where("p_id =?", id).Select("id").Find(&categoryModels).Error; err != nil {
+		return
+	}
+	var childIds []uint
+	for _, v := range categoryModels {
+		childIds = append(childIds, v.ID)
+	}
+	var childCategoryModels []models.Category
+	if err = models.Db.Where(childIds).Find(&childCategoryModels).Error; err != nil {
+		return
+	}
+	for _, v := range childCategoryModels {
+		cate := entities.Category{
+			Id:      v.ID,
+			Name:    v.Name,
+			Desc:    v.Desc,
+			PId:     v.PId,
+			LogoUrl: v.LogoUrl,
+		}
+		categories = append(categories, cate)
+	}
 	return
 }

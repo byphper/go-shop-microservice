@@ -1,7 +1,9 @@
 package main
 
+import "go-shop-microservice/internal/app/goods/models"
+
 func main() {
-	//models.Db.AutoMigrate(&models.Category{})
+	models.Db.AutoMigrate(&models.Spu{},&models.Sku{})
 
 }
 

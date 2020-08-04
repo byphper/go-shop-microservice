@@ -17,6 +17,14 @@ func (cateService *Category) Get(cateId uint) (entities.Category, error) {
 	return cateService.CateResp.Get(cateId)
 }
 
+func (cateService *Category) GetAllChilds(cateId uint) ([]entities.Category, error) {
+	return cateService.CateResp.GetAllChilds(cateId)
+}
+
+func (cateService *Category) GetDirectChilds(cateId uint) ([]entities.Category, error) {
+	return cateService.CateResp.GetDirectChilds(cateId)
+}
+
 func (cateService *Category) Update(cate entities.Category) error {
 	return cateService.CateResp.Update(cate)
 }
