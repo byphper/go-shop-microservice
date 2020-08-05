@@ -16,5 +16,5 @@ type Sku struct {
 	SellPrice   uint
 	MarketPrice uint
 	Stock       uint
-	Status      uint `gorm:"type:tinyint(1)"`
+	Status      uint8 `gorm:"type:tinyint(1)"`
 }

@@ -9,7 +9,7 @@ import (
 type UserResp struct {
 }
 
-func (u *UserResp) IsExist(email string) bool {
+func (userResp *UserResp) IsExist(email string) bool {
 	userModel := &models.User{}
 	if err := models.Db.Select("id").Where("email =?", email).First(userModel).Error; err != nil {
 		return false
@@ -17,25 +17,25 @@ func (u *UserResp) IsExist(email string) bool {
 	return true
 }
 
-func (u *UserResp) Get(id int) (userEntity entities.User, err error) {
+func (userResp *UserResp) Get(id int) (userEntity entities.User, err error) {
 	userModel := &models.User{}
 	if err = models.Db.Where("id =?", id).First(userModel).Error; err != nil {
 		return
 	}
-	u.fillUserField(&userEntity, userModel)
+	userResp.composeFiled(&userEntity, userModel)
 	return
 }
 
-func (u *UserResp) GetByEmail(email string) (userEntity entities.User, err error) {
+func (userResp *UserResp) GetByEmail(email string) (userEntity entities.User, err error) {
 	userModel := &models.User{}
 	if err = models.Db.Where("email =?", email).First(userModel).Error; err != nil {
 		return
 	}
-	u.fillUserField(&userEntity, userModel)
+	userResp.composeFiled(&userEntity, userModel)
 	return
 }
 
-func (u *UserResp) fillUserField(user *entities.User, model *models.User) {
+func (userResp *UserResp) composeFiled(user *entities.User, model *models.User) {
 	user.Id = model.ID
 	user.Name = model.Name
 	user.Email = model.Email
@@ -45,7 +45,7 @@ func (u *UserResp) fillUserField(user *entities.User, model *models.User) {
 	user.Pwd = model.Pwd
 }
 
-func (u *UserResp) Create(email string, name string, avatar string, pwd string) (userEntity entities.User, err error) {
+func (userResp *UserResp) Create(email string, name string, avatar string, pwd string) (userEntity entities.User, err error) {
 	userModel := &models.User{
 		Name:   name,
 		Email:  email,
@@ -63,7 +63,7 @@ func (u *UserResp) Create(email string, name string, avatar string, pwd string) 
 	return
 }
 
-func (u *UserResp) Update(user entities.User) (err error) {
+func (userResp *UserResp) Update(user entities.User) (err error) {
 	userModel := &models.User{
 		Name:   user.Name,
 		Email:  user.Email,

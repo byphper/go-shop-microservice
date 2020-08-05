@@ -11,6 +11,7 @@ type Spu struct {
 	CategoryId  uint   `gorm:"index"`
 	Brand       Brand
 	Category    Category
+	AttrIds     string `gorm:"type:varchar(255)"`
 	Desc        string `gorm:"type:varchar(255)"`
 	LogoUrl     string `gorm:"type:varchar(255)"`
 	MainUrl     string `gorm:"type:varchar(255)"`
@@ -19,5 +20,5 @@ type Spu struct {
 	MarketPrice uint
 	sales       uint
 	Unit        string `gorm:"type:varchar(10);"`
-	Status      uint   `gorm:"type:tinyint(1)"`
+	Status      uint8  `gorm:"type:tinyint(1)"`
 }

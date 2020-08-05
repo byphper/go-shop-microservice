@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"go-shop-microservice/internal/app/goods/entities"
 	"go-shop-microservice/internal/app/goods/models"
 )
@@ -57,6 +56,5 @@ func (attrResp *AttributeResp) Get(id uint) (attr entities.Attribute, err error)
 			attr.Values = append(attr.Values, map[uint]string{v.ID: v.Value})
 		}
 	}
-	fmt.Println(attr)
 	return
 }
