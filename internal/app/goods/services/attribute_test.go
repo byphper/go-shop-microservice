@@ -18,7 +18,7 @@ func TestAttributeService_CreateAttr(t *testing.T) {
 func TestAttributeService_CreateAttrValue(t *testing.T) {
 	attrService := Attribute{AttrResp: &repository.AttributeResp{}}
 	var attrId uint = 2
-	name, desc := "M", "middle"
+	name, desc := "L", "Large"
 	err := attrService.CreateValue(attrId, name, desc)
 	if err != nil {
 		t.Fatal(err)

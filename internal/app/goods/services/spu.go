@@ -9,14 +9,14 @@ type Spu struct {
 	SpuResp *repository.SpuResp
 }
 
-func (skuService *Spu) Create(name, desc, logoUrl, mainUrl, BannelUrl, unit, attrIds string, cid, bid, sellPrice, marketPrice uint) (entities.Spu, error) {
-	return skuService.SpuResp.Create(name, desc, logoUrl, mainUrl, BannelUrl, unit, attrIds, cid, bid, sellPrice, marketPrice)
+func (spuService *Spu) Create(name, desc, logoUrl, mainUrl, BannelUrl, unit, attrIds string, cid, bid, sellPrice, marketPrice uint) (entities.Spu, error) {
+	return spuService.SpuResp.Create(name, desc, logoUrl, mainUrl, BannelUrl, unit, attrIds, cid, bid, sellPrice, marketPrice)
 }
 
-func (skuService *Spu) Get(spuId uint) (entities.Spu, error) {
-	return skuService.SpuResp.Get(spuId)
+func (spuService *Spu) Get(spuId uint) (entities.Spu, error) {
+	return spuService.SpuResp.Get(spuId)
 }
 
-func (skuService *Spu) Update(spu entities.Spu) error {
-	return skuService.SpuResp.Update(spu)
+func (spuService *Spu) Update(spu entities.Spu) error {
+	return spuService.SpuResp.Update(spu)
 }

@@ -12,13 +12,13 @@ type SpuResp struct {
 }
 
 func (spuResp *SpuResp) Create(name, desc, logoUrl, mainUrl, BannelUrl, unit, attrIds string, cid, bid, sellPrice, marketPrice uint) (spu entities.Spu, err error) {
-	cateResp := &CategoryResp{}
+	cateResp := new(CategoryResp)
 	cate, err := cateResp.Get(cid)
 	if err != nil {
 		return spu, errors.Wrap(err, "invalid category")
 	}
 	spu.Category = cate
-	brandResp := &BrandResp{}
+	brandResp := new(BrandResp)
 	brand, err := brandResp.Get(bid)
 	if err != nil {
 		return spu, errors.Wrap(err, "invalid brand")
@@ -53,7 +53,7 @@ func (spuResp *SpuResp) Update(spu entities.Spu) (err error) {
 	if len(attrIdsSlice) == 0 {
 		return errors.Wrap(err, "invalid attr")
 	}
-	model := models.Spu{
+	model := &models.Spu{
 		Name:        spu.Name,
 		BrandId:     spu.Brand.Id,
 		CategoryId:  spu.Category.Id,
@@ -66,22 +66,22 @@ func (spuResp *SpuResp) Update(spu entities.Spu) (err error) {
 		MarketPrice: spu.MarketPrice,
 		Unit:        spu.Unit,
 	}
-	err = models.Db.Model(&model).Where("id =?", spu.Id).Updates(model).Error
+	err = models.Db.Model(model).Where("id =?", spu.Id).Updates(model).Error
 	return
 }
 
 func (spuResp *SpuResp) Get(id uint) (spu entities.Spu, err error) {
-	model := &models.Spu{}
+	model := new(models.Spu)
 	if err = models.Db.Where("id =?", id).First(model).Error; err != nil {
 		return
 	}
-	cateResp := &CategoryResp{}
+	cateResp := new(CategoryResp)
 	cate, _ := cateResp.Get(model.CategoryId)
 	spu.Category = cate
-	brandResp := &BrandResp{}
+	brandResp := new(BrandResp)
 	brand, _ := brandResp.Get(model.BrandId)
 	spu.Brand = brand
-	attrResp := &AttributeResp{}
+	attrResp := new(AttributeResp)
 	attrIdsSlice := strings.Split(model.AttrIds, "-")
 	var attrs []entities.Attribute
 	for _, v := range attrIdsSlice {

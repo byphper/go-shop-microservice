@@ -10,6 +10,7 @@ type Sku struct {
 	Spu         Spu
 	Name        string `gorm:"type:varchar(50);"`
 	Desc        string `gorm:"type:varchar(255)"`
+	AttrValues  string `gorm:"type:varchar(255)"`
 	LogoUrl     string `gorm:"type:varchar(255)"`
 	MainUrl     string `gorm:"type:varchar(255)"`
 	BannerUrl   string `gorm:"type:varchar(255)"`

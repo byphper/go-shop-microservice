@@ -35,7 +35,7 @@ func (brandResp *BrandResp) Update(brand entities.Brand) (err error) {
 }
 
 func (brandResp *BrandResp) Get(id uint) (brand entities.Brand, err error) {
-	model := &models.Brand{}
+	model := new(models.Brand)
 	if err = models.Db.Where("id =?", id).First(model).Error; err != nil {
 		return
 	}

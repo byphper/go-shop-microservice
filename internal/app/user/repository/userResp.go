@@ -10,7 +10,7 @@ type UserResp struct {
 }
 
 func (userResp *UserResp) IsExist(email string) bool {
-	userModel := &models.User{}
+	userModel := new(models.User)
 	if err := models.Db.Select("id").Where("email =?", email).First(userModel).Error; err != nil {
 		return false
 	}
@@ -18,7 +18,7 @@ func (userResp *UserResp) IsExist(email string) bool {
 }
 
 func (userResp *UserResp) Get(id int) (userEntity entities.User, err error) {
-	userModel := &models.User{}
+	userModel := new(models.User)
 	if err = models.Db.Where("id =?", id).First(userModel).Error; err != nil {
 		return
 	}
@@ -27,7 +27,7 @@ func (userResp *UserResp) Get(id int) (userEntity entities.User, err error) {
 }
 
 func (userResp *UserResp) GetByEmail(email string) (userEntity entities.User, err error) {
-	userModel := &models.User{}
+	userModel := new(models.User)
 	if err = models.Db.Where("email =?", email).First(userModel).Error; err != nil {
 		return
 	}

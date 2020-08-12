@@ -39,12 +39,12 @@ func (attrResp *AttributeResp) Update(attr entities.Attribute) (err error) {
 		Name: attr.Name,
 		Desc: attr.Desc,
 	}
-	err = models.Db.Model(&model).Where("id =?", attr.Id).Updates(model).Error
+	err = models.Db.Model(model).Where("id =?", attr.Id).Updates(model).Error
 	return
 }
 
 func (attrResp *AttributeResp) Get(id uint) (attr entities.Attribute, err error) {
-	model := &models.Attr{}
+	model := new(models.Attr)
 	if err = models.Db.Where("id =?", id).Preload("AttrValues").First(model).Error; err != nil {
 		return
 	}

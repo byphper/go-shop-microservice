@@ -10,6 +10,7 @@ type Sku struct {
 	LogoUrl     string
 	MainUrl     string
 	BannerUrl   string
+	AttrValues   string
 	SellPrice   uint
 	MarketPrice uint
 	Stock       uint

@@ -7,9 +7,10 @@ import (
 
 func TestSkuService_Create(t *testing.T) {
 	skuService := &Sku{SkuResp: &repository.SkuResp{}}
-	name, desc, logoUrl, mainUrl, BannelUrl := "美特斯邦威", "不错", "", "", ""
+	name, desc, logoUrl, mainUrl, BannelUrl := "美", "不错", "", "", ""
 	spuId, stock, sp, mp := uint(1), uint(999), uint(1000), uint(1200)
-	attr, err := skuService.Create(name, desc, logoUrl, mainUrl, BannelUrl, spuId, stock, sp, mp)
+	attrValues := "[{1:1},{2:6}]"
+	attr, err := skuService.Create(name, desc, attrValues, logoUrl, mainUrl, BannelUrl, spuId, stock, sp, mp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -17,23 +18,34 @@ func TestSkuService_Create(t *testing.T) {
 }
 
 func TestSkuService_Get(t *testing.T) {
-	SkuService := &Sku{SkuResp: &repository.SkuResp{}}
+	skuService := &Sku{SkuResp: &repository.SkuResp{}}
 	var SkuId uint = 1
-	Sku, err := SkuService.Get(SkuId)
+	sku, err := skuService.Get(SkuId)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log(Sku)
+	t.Log(sku)
+}
+
+func TestSkuService_GetSkuByAttrValue(t *testing.T) {
+	skuService := &Sku{SkuResp: &repository.SkuResp{}}
+	var spuId uint = 1
+	var attrValues = "[{\"attr_id\":1,\"value_id\":2},{\"attr_id\":2,\"value_id\":6}]"
+	sku, err := skuService.GetSkuByAttrValues(spuId, attrValues)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(sku)
 }
 
 func TestSkuService_Update(t *testing.T) {
-	SkuService := Sku{SkuResp: &repository.SkuResp{}}
+	skuService := Sku{SkuResp: &repository.SkuResp{}}
 	var SkuId uint = 1
-	Sku, _ := SkuService.Get(SkuId)
-	Sku.Desc = "是改了的"
-	err := SkuService.Update(Sku)
+	sku, _ := skuService.Get(SkuId)
+	sku.Desc = "是改了的"
+	err := skuService.Update(sku)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log(Sku)
+	t.Log(sku)
 }
